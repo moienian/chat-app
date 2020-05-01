@@ -7,8 +7,13 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-io.on("connection", () => {
+io.on("connection", (socket) => {
   console.log("New WebSocket Connection");
+  socket.emit("message", "Wellcome");
+
+  socket.on("sendMessage", (message) => {
+    io.emit("message", message);
+  });
 });
 
 const publicDirectoryPath = path.join(__dirname, "../public");
