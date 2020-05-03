@@ -21,9 +21,15 @@ sendLocationBtn.addEventListener("click", () => {
   }
 
   navigator.geolocation.getCurrentPosition((position) => {
-    socket.emit("sendLocation", {
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude,
-    });
+    socket.emit(
+      "sendLocation",
+      {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      },
+      (callback) => {
+        console.log(callback);
+      }
+    );
   });
 });
