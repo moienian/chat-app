@@ -4,6 +4,8 @@ const form = document.getElementById("form");
 const input = document.getElementById("message");
 const submitBtn = form.querySelector("button");
 const sendLocationBtn = document.querySelector("#send-location");
+const messages = document.querySelector("#messages");
+const messageTemplate = document.querySelector("#message-template").innerHTML;
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -23,6 +25,10 @@ form.addEventListener("submit", (e) => {
 
 socket.on("message", (message) => {
   console.log(message);
+  const html = Mustache.render(messageTemplate, {
+    message,
+  });
+  messages.insertAdjacentHTML("beforeend", html);
 });
 
 sendLocationBtn.addEventListener("click", () => {
