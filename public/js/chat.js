@@ -1,13 +1,18 @@
 const socket = io();
 
-const form = document.querySelector("#form");
-const input = document.querySelector("#message");
+const form = document.getElementById("form");
+const input = document.getElementById("message");
+const submitBtn = form.querySelector("button");
 const sendLocationBtn = document.querySelector("#send-location");
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+  submitBtn.setAttribute("disabled", "disabled");
+
   const message = input.value;
   socket.emit("sendMessage", message, (error) => {
+    submitBtn.removeAttribute("disabled");
+
     if (error) {
       console.log(error);
     }
@@ -25,6 +30,8 @@ sendLocationBtn.addEventListener("click", () => {
     return alert("Geolocation is not supported by your browser!");
   }
 
+  sendLocationBtn.setAttribute("disabled", "disabled");
+
   navigator.geolocation.getCurrentPosition((position) => {
     socket.emit(
       "sendLocation",
@@ -33,6 +40,7 @@ sendLocationBtn.addEventListener("click", () => {
         longitude: position.coords.longitude,
       },
       (callback) => {
+        sendLocationBtn.removeAttribute("disabled");
         console.log(callback);
       }
     );
